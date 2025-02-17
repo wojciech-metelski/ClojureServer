@@ -1,0 +1,24 @@
+image: clojure:lein-2.8.1-alpine
+stages:
+  - test
+  - build
+  - deploy
+
+before_script:
+  - lein deps
+
+test:
+  script:
+    - lein test
+
+build:
+  script:
+    - lein uberjar
+  artifacts:
+    paths:
+      - target/*.jar
+
+deploy:
+  script:
+    - echo "Starting Server..."
+    - lein ring server-headless
